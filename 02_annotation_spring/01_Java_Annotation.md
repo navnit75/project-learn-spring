@@ -34,6 +34,7 @@ Size UK: 6
 </beans>
 ```
 - Add the `@Component` Annotation to your Java class. 
+
 **TennisCoach.java**
 ```Java
 package com.luv2code.springdemo;
@@ -52,6 +53,7 @@ public class TennisCoach implements Coach {
 ```
 
 - Retrieve the bean from Spring container. 
+
 **AnnotationDemoApp.java**
 ```Java
 package com.luv2code.springdemo;
@@ -87,6 +89,7 @@ public class AnnotationDemoApp {
 ```
 
 ## Validating 
+
 **annotationContext.xml**
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
