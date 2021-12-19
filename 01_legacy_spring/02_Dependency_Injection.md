@@ -49,7 +49,7 @@ Coach --------> FortuneService
 - Auto Wiring in Annotation section. 
 
 ## Constructor Injection
----
+
 ## Behind the scenes
 ```Java
 HappyFortuneService myFortuneService = new HappyFortuneService(); 
