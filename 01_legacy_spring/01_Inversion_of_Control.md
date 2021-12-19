@@ -191,7 +191,7 @@ public class MyLoggerConfig {
 ```
 
 - Folder Structure used
-![image]()
+![image](https://github.com/navnit75/spring_framework_learning/raw/main/01_legacy_spring/Folder_structure.png)
 
 - xml configuration for the Track Coach class 
 ```xml
