@@ -128,7 +128,6 @@ public class TrackCoach implements Coach {
 
 
 ## SETTER INJECTION
----
 ### DEVELOPEMENT PROCESS
 1. Create Setter method(s) in your class for injections
 
@@ -245,7 +244,6 @@ Practice fast bowling 15 minutes
 Today is your lucky day!
 ```
 ## SETTING THE LITERAL VALUE
----
 ```xml
 <property name = "emailAddress" value="thebestcoach@luv2code.com" />
                         |
@@ -393,7 +391,6 @@ public class SetterDemoApp {
 ```
 
 ## INJECTING VALUES FROM PROPERTIES FILE
----
 ### Developement Process
 1. Create properties file
     - Add in src, create a new file with the format
