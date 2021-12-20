@@ -310,7 +310,8 @@ public class SillyController {
 	
 	<h2>Spring MVC Demo - Home Page</h2>
 	
-	<a href="hello/showForm">Plain Hello World</a>
+	<!-- when opening this form , we would have already reached /hello -->
+	<a href="showForm">Plain Hello World</a>
 	
 	<br><br>
 	
