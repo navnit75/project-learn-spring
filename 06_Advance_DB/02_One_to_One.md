@@ -22,5 +22,5 @@ Instructor ------> instructor_detail
 | Remove | Transistions managed entity to be removed. Next flush / commit will delete from db. |
 | Refresh | Reload/ synch object with data from db. Prevents stale data. |
 
-
+## Representation of Entity Life Cycle
 ![GIF here](./VE_Project_1.gif)
