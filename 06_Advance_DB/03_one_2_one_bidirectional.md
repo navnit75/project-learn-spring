@@ -42,7 +42,7 @@
     1. Add new field to reference `Instructor`
     2. Add getters and setters. 
     3. Add @OneToOne annotation. 
-![](./step_2.png)
+
 
 `/hb-01-one-to-one-bi/src/com/luv2code/hibernate/demo/entity/InstructorDetail.java`
 ```Java
@@ -136,7 +136,7 @@ public class InstructorDetail {
 
 ```
 - Create Main app
-![](./step_3_2.png)
+
 `/hb-01-one-to-one-bi/src/com/luv2code/hibernate/demo/GetInstructorDetailsDemo.java`
 ```Java
 package com.luv2code.hibernate.demo;
