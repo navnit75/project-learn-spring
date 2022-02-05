@@ -1,101 +1,36 @@
 ## Problem
-- How to control the order of advices being applied .
-- `ORDER IS UNDEFINED`
-```
-MyLoggingDemoAspect
-    - beforeAddAccountAdvice
-    - performApiAnalyticsAdvice
-    - logToCloudAdvice  
-```
+- When we are in the aspect (i.e for logging)
+- How can we access the method parameter
 
-## To control order
-- `Refactor`: Place advices in separate Aspects 
-- Control order on aspect using `@Order` annotation. 
-- Gurantee order of when Aspects are applied. 
-
-## Process to be followed
-- Refactor: Place advices in separate Aspects. 
-```
-MyLoggingDemoAspect
-    - beforeAddAccountAdvice
-    - performApiAnalyticsAdvice
-    - logToCloudAdvice
-           |
-           |
-           |
-           v
-MyLoggingDemoAspect
-    - beforeAddAccountAdvice
-
-MyApiAnalyticsAspect
-    - performApiAnalyticsAdvice
-
-MyCloudLogAspect
-     - logToCloudAdvice
-```
-
-- Add @Order annotations to Aspects. 
-    - We can control the order on Aspects using the @Order annotation
-    - Gurantees order of when Aspects are applied 
-    - lower number have higher precedence 
-
+## Developement process
+- Access and display method signatures
 ```Java
-@Order(1)
-public class MyCloudAspect{
-    ...
+@Before("...")
+public void beforeAddAccountAdvice(JoinPoint theJoinPoint){
+    // display the method signature 
+    MethodSignature methodSig = (MethodSignature)theJoinPoint.getSignature(); 
+    System.out.println("Method:"+methodSig);
 }
 ```
+- Access and display method parameters
+```Java
+@Before("...")
+public void beforeAddAccountAdvice(JoinPoint theJoinPoint){
+    // display method arguments
 
-## Order we want 
-- MyCloudLogAspec
-- MyLoggingDemoAspect
-- MyApiAnalyticsAspect
+    // get args 
+    Object[] args = theJoinPoint.getArgs(); 
 
+    // loop thru args 
+    for(Object tempArg : args){
+        System.out.println(tempArg);
+    }
+}
 ```
-Main -----> AOP ------ @Order(1)---------- @Order(2)-------------- @Order(3)--------------> Target Object
-App        Proxy     MyCloudLogAspect    MyLoggingDemoAspect     MyApiAnalyticsAspect
-```
-
-## `@Order` Annotation
-- Lower numbers have higher precedence 
-    - Range: Integer.MIN_VALUE to Integer.MAX_VALUE
-    - Negative numbers are allowed
-    - Does not have to be consecutive
-- FAQ: What if aspects have the exact same @Order annotation? 
-```
-@Order(1)
-public class MyCloudAspect {...}
-
-====================================
-@Order(6)                           
-public class MyShowAspect {...}    
-                                    -------------> The order at this point is UNDEFINED (will still run AFTER MyCloudLogAspect and BEFORE                                              MyLoggingDemoAspect)
-@Order(6)
-public class MyFunnyAspect {...}
-=====================================
-@Order(123)
-public class MyLoggingDemoAspect {...}
-```
-
 ## Implementation 
-```
-src
-└── com
-    └── luv2code
-        └── aopdemo
-            ├── Account.java
-            ├── DemoConfig.java
-            ├── MainDemoApp.java
-            ├── aspect
-            │   ├── LuvAopExpressions.java
-            │   ├── MyApiAnalyticsAspect.java
-            │   ├── MyCloudLogAsyncAspect.java
-            │   └── MyDemoLoggingAspect.java
-            └── dao
-                ├── AccountDAO.java
-                └── MembershipDAO.java
-```
+
 - `Account.java`
+
 ```Java
 package com.luv2code.aopdemo;
 
@@ -140,7 +75,7 @@ public class DemoConfig {
 ```
 - `MainDemoApp.java`
 ```Java
-	package com.luv2code.aopdemo;
+		package com.luv2code.aopdemo;
 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
@@ -164,12 +99,16 @@ public class MainDemoApp {
 		
 		// call the business method
 		Account myAccount = new Account();
+		myAccount.setName("Madhu");
+		myAccount.setLevel("Platinum");
+		
+		// call the accountDao getter/setter methods
 		theAccountDAO.addAccount(myAccount,true);
 		theAccountDAO.doWork();
 		
-		// call the accountDao getter/setter methods
 		theAccountDAO.setName("foobar");
 		theAccountDAO.setServiceCode("silver");
+		
 		
 		String name = theAccountDAO.getName();
 		String code = theAccountDAO.getServiceCode();
@@ -258,11 +197,15 @@ public class MyCloudLogAsyncAspect {
 ```Java
 package com.luv2code.aopdemo.aspect;
 
+import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
+
+import com.luv2code.aopdemo.Account;
 
 @Aspect
 @Component
@@ -271,8 +214,32 @@ public class MyDemoLoggingAspect {
 	
 	// They will only be applied which are not getter or setter
 	@Before("com.luv2code.aopdemo.aspect.LuvAopExpressions.forDaoPackageNoGetterSetter()")
-	public void beforeAddAccountAdvice() {
+	public void beforeAddAccountAdvice(JoinPoint theJoinPoint) {
 			System.out.println("\n====>>> Executing @Before advice on method");
+			
+			// display the signature 
+			MethodSignature methodSig = (MethodSignature) theJoinPoint.getSignature();
+			
+			System.out.println("Method: "+methodSig);
+			
+			// display the method arguments 
+			
+			// get the args 
+			 Object[] args = theJoinPoint.getArgs();
+			 
+			 // loop thru args 
+			   for(Object tempArg : args){
+			        System.out.println(tempArg);
+			        
+			        if(tempArg instanceof Account) {
+			        	// downcast and print all account related stuff
+			        	Account theAccount = (Account)tempArg; 
+			        	System.out.println("Account Name: "+theAccount.getName());
+			        	System.out.println("Account Level: "+theAccount.getLevel());
+			        	
+			        }
+			   }
+			
 	}
 }
 ```
@@ -342,18 +309,26 @@ public class MembershipDAO {
 	}
 }
 ```
+
 - `Output`
 ```
-
 ====>>> Logging to Cloud in async fashion
 
 ====>>> Executing @Before advice on method
+Method: void com.luv2code.aopdemo.dao.AccountDAO.addAccount(Account,boolean)
+com.luv2code.aopdemo.Account@3da30852
+Account Name: Madhu
+Account Level: Platinum
+true
+
 ====>>> Performing API analytics
 class com.luv2code.aopdemo.dao.AccountDAO: DOING MY DB WORK: ADDING AN ACCOUNT
 
 ====>>> Logging to Cloud in async fashion
 
 ====>>> Executing @Before advice on method
+Method: boolean com.luv2code.aopdemo.dao.AccountDAO.doWork()
+
 ====>>> Performing API analytics
 class com.luv2code.aopdemo.dao.AccountDAO: doWork()
 class com.luv2code.aopdemo.dao.AccountDAO: in setName()
@@ -364,13 +339,16 @@ class com.luv2code.aopdemo.dao.AccountDAO: in getServiceCode()
 ====>>> Logging to Cloud in async fashion
 
 ====>>> Executing @Before advice on method
+Method: boolean com.luv2code.aopdemo.dao.MembershipDAO.addSillyMember()
+
 ====>>> Performing API analytics
 class com.luv2code.aopdemo.dao.MembershipDAO: DOING STUFF: ADDING A MEMBERSHIP ACCOUNT
 
 ====>>> Logging to Cloud in async fashion
 
 ====>>> Executing @Before advice on method
+Method: void com.luv2code.aopdemo.dao.MembershipDAO.goToSleep()
+
 ====>>> Performing API analytics
 class com.luv2code.aopdemo.dao.MembershipDAO: I am going to sleep now...
-
 ```
