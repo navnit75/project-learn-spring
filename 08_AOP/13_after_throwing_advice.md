@@ -166,7 +166,109 @@ public class AccountDAO {
 }
 
 ```
+**MyDemoLoggingAspect.java**
+```Java
+package com.luv2code.aopdemo.aspect;
 
+import java.util.List;
+
+import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.annotation.AfterReturning;
+import org.aspectj.lang.annotation.AfterThrowing;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
+import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Component;
+
+import com.luv2code.aopdemo.Account;
+
+@Aspect
+@Component
+@Order(2)
+public class MyDemoLoggingAspect {
+	/// add a new advice for @AfterThrowing
+	@AfterThrowing(
+			pointcut="execution(* com.luv2code.aopdemo.dao.AccountDAO.findAccounts(..))",
+			throwing="theExc"
+			)
+	public void afterReturningFindAccountAdvice(JoinPoint theJoinPoint, Throwable theExc) {
+		
+		/// print out the method we are advising on 
+		String method = theJoinPoint.getSignature().toShortString();
+		System.out.println("\n=====>>> Executing @AfterThrowing on method: "+method);
+		
+		/// Display the exception
+		System.out.println("\n=====>>> The exeption is "+ theExc);
+	}
+	
+	
+	
+	/// add a new advice for @AfterReturning 
+	@AfterReturning(
+			pointcut="execution(* com.luv2code.aopdemo.dao.AccountDAO.findAccounts(..))",
+			returning="result"
+			)
+	public void afterReturningFindAccountAdvice(JoinPoint theJoinPoint, List<Account> result) {
+	
+		// print out the method we are advising on 
+		String method = theJoinPoint.getSignature().toShortString();
+		System.out.println("\n=====>>> Executing @AfterReturning on method: "+method);
+		
+		// print out the results of the method call 
+		System.out.println("\n=====>>> Result is : "+result);
+		
+		/// lets post process the data ... lets modify it 
+		
+		/// convert the account names to upper case 
+		convertAccountNamesToUpperCase(result);
+		
+		/// print out the results
+		System.out.println("\n=====>>> Result is : "+result);
+	}
+	
+	
+	private void convertAccountNamesToUpperCase(List<Account> result) {
+		
+		for(Account theAccount: result) {
+			theAccount.setName(theAccount.getName().toUpperCase());
+		}
+		
+	}
+
+
+	// They will only be applied which are not getter or setter
+	@Before("com.luv2code.aopdemo.aspect.LuvAopExpressions.forDaoPackageNoGetterSetter()")
+	public void beforeAddAccountAdvice(JoinPoint theJoinPoint) {
+			System.out.println("\n====>>> Executing @Before advice on method");
+			
+			// display the signature 
+			MethodSignature methodSig = (MethodSignature) theJoinPoint.getSignature();
+			
+			System.out.println("Method: "+methodSig);
+			
+			// display the method arguments 
+			
+			// get the args 
+			 Object[] args = theJoinPoint.getArgs();
+			 
+			 // loop thru args 
+			   for(Object tempArg : args){
+			        System.out.println(tempArg);
+			        
+			        if(tempArg instanceof Account) {
+			        	// downcast and print all account related stuff
+			        	Account theAccount = (Account)tempArg; 
+			        	System.out.println("Account Name: "+theAccount.getName());
+			        	System.out.println("Account Level: "+theAccount.getLevel());
+			        	
+			        }
+			   }
+			
+	}
+}
+```
 **Output**
 ```
 
