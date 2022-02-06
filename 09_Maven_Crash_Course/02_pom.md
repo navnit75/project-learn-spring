@@ -5,9 +5,9 @@
 - Located in root of your Maven project. 
 
 ## Structure 
-![](./pom_file_structure.jpg)
+![](./images/pom_file_structure.jpg)
 
-![](./pom_exm.jpg)
+![](./images/pom_exm.jpg)
 
 ## Project Coordinates
 - Project coordinates uniquely identify a project. 
@@ -18,7 +18,7 @@
 <version>1.0.FINAL<version>
 ```
 - Meaning
-![](./project_elements.jpg)
+![](./images/project_elements.jpg)
 
 ## Examples of Project Coordinates 
 - Spring 

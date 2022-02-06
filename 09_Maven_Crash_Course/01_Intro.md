@@ -42,13 +42,13 @@
     - Each developement team dreams up their own directory structure.
     - Not ideal for new comers and not standardized. 
 - Maven solves this problem by providing a standard directory structure.
-![](./standard_dir_structure.jpg)
+![](./images/standard_dir_structure.jpg)
 
 - Normal project directoroy structure
-![](./normal_project_dir_structure.jpg)
+![](./images/normal_project_dir_structure.jpg)
 
 - Normal dynamic web project directory structure
-![](./web_app.jpg)
+![](./images/web_app.jpg)
 
 ## Standard Directory Structure Benefits 
 - For new developers joining a project 
