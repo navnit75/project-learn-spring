@@ -15,6 +15,7 @@
 ![](./images/m2e_support.gif)
 
 ## Creating a quickstart maven app
+![](./images/create_quickstart_maven.gif)
 
 ## Updating pom.xml
 - Update is done for using Java 1.8 variant

@@ -5,6 +5,7 @@
 - Run our webapp
 
 ## Steps to create a web app in maven
+![](./images/create_webapp.gif)
 
 ## Added Servlet Dependency
 - Using GAV
