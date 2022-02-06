@@ -12,6 +12,7 @@
 - Can create Maven projects, add dependencies all inside Eclipse. 
 
 ## Checking the m2eclipse support 
+![](./images/m2e_support.gif)
 
 ## Creating a quickstart maven app
 
@@ -25,3 +26,4 @@
   </properties>
 ```
 - Right Click Project --> Maven --> Update Project
+![](./images/update_folder.gif)
