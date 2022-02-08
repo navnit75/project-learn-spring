@@ -91,3 +91,37 @@ Password field: password
 - If you change context path of app, then links will still work
 - Much better than hard-coding context path …
 - Best Practice
+
+## Error Obtained 
+1. **No Error Message**: There is no error message shown as we are implementing the html page ourselves. 
+    - Default login page provided by spring will have built in support for error messages. 
+    - Because we have not added any logic to handle for login error messages, its not shown when we type in wrong userid, pass. 
+
+
+## Failed Login
+- When login fails, by default Spring Security will…
+- Send user back to your login page
+- Append an error parameter: ?error
+- URL Looks like this : 
+`http://localhost:8080/myapp/showMyLoginPage?error`
+
+## Development Process
+1. Modify custom login form
+    - Check the error parameter
+    - If error parameter exists, show an error message
+
+## Step 1: Modify form - check for error
+**plain-login.jsp**
+```html
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+…
+<form:form action="…" method="…">
+    <c:if test="${param.error != null}”>
+        
+        <i>Sorry! You entered invalid username/password.</i>
+    </c:if>
+    User name: <input type="text" name="username" />
+    Password: <input type="password" name="password" />
+</form:form>
+```
+- If error param then show message
