@@ -138,3 +138,16 @@ public class DemoSecurityConfig extends WebSecurityConfigurerAdapter {
 }
 ```
 
+## Issue - 1 
+- During dev and testing you may have noticed an issue... 
+- `the user stays logged in`
+- Once you change the JSP page and refresh, you will see that the user is not Logged Out.
+- After logging in, if we open new tab. Any type the same URL , it will open the user logged in. 
+- Reason
+	- User login is based on a "Web browser session". 
+- Solution 
+	- Start a new web browser. ( This gives us a  NEW Session) 
+	- Quit browser and start again 
+	- New private window
+
+
