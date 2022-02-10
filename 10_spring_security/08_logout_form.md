@@ -31,7 +31,7 @@ protected void configure(HttpSecurity http) throws Exception {
 - You get it for free … no coding required
 - Send data to default logout URL: /logout
 - By default, must use POST method
-```Java
+```html
 <form:form action="${pageContext.request.contextPath}/logout" method="POST">
     <input type="submit" value="Logout" />
 </form:form>
@@ -47,7 +47,7 @@ protected void configure(HttpSecurity http) throws Exception {
 1. Update login form
     1.Check the logout parameter
     2.If logout parameter exists, show “logged out” message
-```Java
+```html
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 …
 <form:form action="…" method="…">
