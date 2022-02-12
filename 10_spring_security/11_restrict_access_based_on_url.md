@@ -79,3 +79,43 @@ protected void configure(HttpSecurity http) throws Exception {
     .accessDeniedPage(“/access-denied”);
 }
 ```
+
+## Display contents based on roles
+- When logged into home page. 
+- A employee get to see 
+```
+Leadership Meeting (Only for Managers peeps)
+IT Systems Meeting (Only for Admin peeps)
+```
+- So `John` is an employee and he shouldn't be able to see these links / content. 
+- Display content based on the roles facilitates "Managers seeing content specified for managers"
+- Employee seeing content specified for Employees. 
+- Display content based on the roles facilitates "Admins seeing content specified for Admin"
+
+## <security:authorize>
+- Only show this section for users with MANAGER role
+```jsp
+<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
+...
+<security:authorize access="hasRole('MANAGER')">
+    <p>
+        <a href="${pageContext.request.contextPath}/leaders">
+            Leadership Meeting
+        </a>
+        (Only for Manager peeps)
+    </p>
+</security:authorize>
+```
+- Only show this section for users with ADMIN role
+```jsp
+<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
+...
+<security:authorize access="hasRole('ADMIN')">
+    <p>
+        <a href=“${pageContext.request.contextPath}/systems”>
+            IT Systems Meeting
+        </a>
+        (Only for Admin peeps)
+    </p>
+</security:authorize>
+```
