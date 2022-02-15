@@ -124,3 +124,89 @@ public class DemoRestController {
     }
 }
 ```
+
+## Creating a new Service 
+- `GET` **/api/students** Returns a list of students
+
+
+## Basic Architecture We Want 
+![](./images/basic_architecture.jpg)
+
+## Convert Java POJO to JSON
+- Our REST Service will return List<Student>
+- Need to convert List<Student> to JSON
+- Jackson can help us out with this…
+
+## Spring and Jackson Support
+- Spring will automatically handle Jackson integration
+- As long as the Jackson project is on the classpath or pom.xml
+- JSON data being passed to REST controller is converted to Java POJO
+- Java POJO being returned from REST controller is converted to JSON
+- Happens automatically behind the scenes
+
+## Student POJO(class)
+![](./images/student_pojo.jpg
+
+## Jackson Data Binding
+Jackson will call appropriate getter/setter method
+```json
+{
+    "id": 14,
+    "firstName": "Mario",
+    "lastName": "Rossi",
+    "active": true
+}
+```
+
+## Behind the scenes
+![](./images/behind_the_scenes.jpg)
+
+## Development Process
+1. Create Java POJO class for Student
+**Student.java**
+```Java
+public class Student {
+    private String firstName;
+    private String lastName;
+
+    public Student() {
+    }
+    
+    public Student(String firstName, String lastName) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+    public String getFirstName() {
+        return firstName;
+    }
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+    public String getLastName() {
+        return lastName;
+    }
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+}
+```
+
+2. Create Spring REST Service using @RestController
+-Jackson will convert List<Student> to JSON array
+**StudentRestController.java**
+```Java
+@RestController
+@RequestMapping("/api")
+public class StudentRestController {
+
+// define endpoint for "/students" - return list of students
+@GetMapping("/students")
+public List<Student> getStudents() {
+        List<Student> theStudents = new ArrayList<>();
+        theStudents.add(new Student("Poornima", "Patel"));
+        theStudents.add(new Student("Mario", "Rossi"));
+        theStudents.add(new Student("Mary", "Smith"));
+        return theStudents;
+    }
+}
+```
